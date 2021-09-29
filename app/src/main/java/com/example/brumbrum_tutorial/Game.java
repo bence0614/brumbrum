@@ -11,15 +11,25 @@ import android.view.SurfaceView;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 
+import com.example.brumbrum_tutorial.object.Circle;
+import com.example.brumbrum_tutorial.object.Enemy;
+import com.example.brumbrum_tutorial.object.Player;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 /**
  * Game manages all objects in the game and is responsible for updating all states
- * and render all objexts on the screen
+ * and render all objects on the screen
  */
 public class Game extends SurfaceView implements SurfaceHolder.Callback {
 
     private final Player player;
+    private final Joystick joystick;
+    //private final Enemy enemy;
     private GameLoop gameLoop;
-    private Context context;
+    private List<Enemy> enemyList = new ArrayList<Enemy>();
 
     public Game(Context context) {
         super(context);
@@ -30,9 +40,10 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 
         gameLoop = new GameLoop(this, surfaceHolder);
 
-        //INITIALIZE PLAYER
-        player = new Player(getContext(),2*500,500, 80);
-
+        //INITIALIZE game objects
+        joystick = new Joystick(275,350,100,50);
+        player = new Player(getContext(), joystick,2*500,500, 80);
+        //enemy = new Enemy(getContext(), player,2*500,200, 80);
         setFocusable(true);
     }
 
@@ -41,9 +52,20 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 
         switch (event.getAction()){
             case MotionEvent.ACTION_DOWN:
-            case MotionEvent.ACTION_MOVE:
-                player.setPosition((double)event.getX(),(double)event.getY());
+                if(joystick.isPressed((double)event.getX(),(double)event.getY())){
+                    joystick.setIsPressed(true);
+                }
                 return true;
+            case MotionEvent.ACTION_MOVE:
+                if(joystick.getIsPressed()){
+                    joystick.setActuator((double)event.getX(),(double)event.getY());
+                }
+                return true;
+            case MotionEvent.ACTION_UP:
+                joystick.setIsPressed(false);
+                joystick.resetActuator();
+                return true;
+
         }
         return super.onTouchEvent(event);
     }
@@ -61,15 +83,6 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     public void surfaceDestroyed(@NonNull SurfaceHolder holder) {
 
-    }
-
-    @Override
-    public void draw(Canvas canvas) {
-        super.draw(canvas);
-        drawUPS(canvas);
-        drawFPS(canvas);
-
-        player.draw(canvas);
     }
 
     public void drawUPS(Canvas canvas){
@@ -90,8 +103,42 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         canvas.drawText("FPS: " + averageFPS, 100, 100, paint);
     }
 
+    @Override
+    public void draw(Canvas canvas) {
+        super.draw(canvas);
+        drawUPS(canvas);
+        drawFPS(canvas);
+
+        joystick.draw(canvas);
+        player.draw(canvas);
+        for (Enemy enemy : enemyList){
+            enemy.draw(canvas);
+        }
+        //enemy.draw(canvas);
+    }
+
     public void update() {
+        joystick.update();
         player.update();
+        //enemy.update();
+
+        if(Enemy.readyToSpawn()){
+            enemyList.add(new Enemy(getContext(), player));
+        }
+
+        //update state of each enemy
+        for (Enemy enemy: enemyList){
+            enemy.update();
+        }
+
+        //Iterate through enemyList and check for collision between enemy and player
+        Iterator<Enemy> enemyIterator = enemyList.iterator();
+        while (enemyIterator.hasNext()){
+            if(Circle.isColliding(enemyIterator.next(), player)){
+                //Remove enemy if it collides with the player
+                enemyIterator.remove();
+            }
+        }
     }
 }
 
