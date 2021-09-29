@@ -141,4 +141,3 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         }
     }
 }
-
