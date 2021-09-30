@@ -7,6 +7,7 @@ import androidx.core.content.ContextCompat;
 import com.example.brumbrum_tutorial.GameLoop;
 import com.example.brumbrum_tutorial.Joystick;
 import com.example.brumbrum_tutorial.R;
+import com.example.brumbrum_tutorial.Utils;
 
 /**
  * Player - the main character controlled by joystick
@@ -38,10 +39,15 @@ public class Player extends Circle{
         //update position
         positionX += velocityX;
         positionY += velocityY;
+
+        //update direction
+        if(velocityX != 0 ||velocityY != 0){
+            //normalize velocity to get direction(unit vector of velocity
+            double distance = Utils.getDistanceBetweenPoints(0, 0, velocityX, velocityY);
+            directionX = velocityX/distance;
+            directionY = velocityY/distance;
+        }
     }
 
-    public void setPosition(double positionX, double positionY) {
-        this.positionX = positionX;
-        this.positionY = positionY;
-    }
+
 }
