@@ -1,8 +1,11 @@
 package com.example.brumbrum_tutorial;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -39,6 +42,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
     private int numberOfSpellsToCast = 0;
     private GameOver gameOver;
     private Performance performance;
+    private GameDisplay gameDisplay;
 
     public Game(Context context) {
         super(context);
@@ -56,6 +60,11 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 
         //INITIALIZE game objects
         player = new Player(getContext(), joystick,2*500,500, 50);
+
+        //Initialize game display and center it around the player
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        ((Activity)getContext()).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        gameDisplay = new GameDisplay(displayMetrics.widthPixels, displayMetrics.heightPixels, player);
 
         setFocusable(true);
     }
@@ -102,17 +111,21 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 
     @Override
     public void surfaceCreated(@NonNull SurfaceHolder holder) {
+        Log.d("Game.java", "surface()");
+        if (gameLoop.getState().equals(Thread.State.TERMINATED)) {
+            gameLoop = new GameLoop(this, holder);
+        }
         gameLoop.startLoop();
     }
 
     @Override
     public void surfaceChanged(@NonNull SurfaceHolder holder, int format, int width, int height) {
-
+        Log.d("Game.java", "surfaceChanged()");
     }
 
     @Override
     public void surfaceDestroyed(@NonNull SurfaceHolder holder) {
-
+        Log.d("Game.java", "surfaceDestroyed()");
     }
 
     @Override
@@ -122,12 +135,12 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         performance.drawFPS(canvas);
 
         joystick.draw(canvas);
-        player.draw(canvas);
+        player.draw(canvas, gameDisplay);
         for (Enemy enemy : enemyList){
-            enemy.draw(canvas);
+            enemy.draw(canvas, gameDisplay);
         }
         for (Spell spell : spellList){
-            spell.draw(canvas);
+            spell.draw(canvas, gameDisplay);
         }
 
         // Draw game over if the player is dead
@@ -185,5 +198,10 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
                 }
             }
         }
+        gameDisplay.update();
+    }
+
+    public void pause() {
+        gameLoop.stopLoop();
     }
 }

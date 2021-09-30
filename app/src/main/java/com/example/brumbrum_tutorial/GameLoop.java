@@ -1,6 +1,7 @@
 package com.example.brumbrum_tutorial;
 
 import android.graphics.Canvas;
+import android.util.Log;
 import android.view.SurfaceHolder;
 
 public class GameLoop extends  Thread{
@@ -28,12 +29,14 @@ public class GameLoop extends  Thread{
     }
 
     public void startLoop() {
+        Log.d("GameLoop.java","startLoop()");
         isRunning = true;
         start();
     }
 
     @Override
     public void run() {
+        Log.d("GameLoop.java","run()");
         super.run();
 
         //declare variables
@@ -100,6 +103,17 @@ public class GameLoop extends  Thread{
                 startTime = System.currentTimeMillis();
             }
 
+        }
+    }
+
+    public void stopLoop() {
+        Log.d("GameLoop.java","stopLoop()");
+        isRunning = false;
+        //wait for thread to join
+        try {
+            join();
+        }catch(InterruptedException e){
+            e.printStackTrace();
         }
     }
 }

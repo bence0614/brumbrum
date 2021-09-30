@@ -2,6 +2,8 @@ package com.example.brumbrum_tutorial.object;
 
 import android.graphics.Canvas;
 
+import com.example.brumbrum_tutorial.GameDisplay;
+
 public abstract class GameObject {
     protected double positionX;
     protected double positionY;
@@ -23,7 +25,7 @@ public abstract class GameObject {
         );
     }
 
-    public abstract void draw(Canvas canvas);
+    public abstract void draw(Canvas canvas, GameDisplay gameDisplay);
     public abstract void update();
 
     public double getPositionX() {

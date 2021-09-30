@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 
 import androidx.core.content.ContextCompat;
 
+import com.example.brumbrum_tutorial.GameDisplay;
 import com.example.brumbrum_tutorial.GameLoop;
 import com.example.brumbrum_tutorial.gamepanel.Joystick;
 import com.example.brumbrum_tutorial.R;
@@ -52,9 +53,9 @@ public class Player extends Circle{
     }
 
     @Override
-    public void draw(Canvas canvas) {
-        super.draw(canvas);
-        healthBar.draw(canvas);
+    public void draw(Canvas canvas, GameDisplay gameDisplay) {
+        super.draw(canvas, gameDisplay);
+        healthBar.draw(canvas, gameDisplay);
     }
 
     public int getHealthPoints() {
