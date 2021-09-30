@@ -1,8 +1,10 @@
-package com.example.brumbrum_tutorial;
+package com.example.brumbrum_tutorial.gamepanel;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+
+import com.example.brumbrum_tutorial.Utils;
 
 public class Joystick {
 

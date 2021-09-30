@@ -1,13 +1,15 @@
 package com.example.brumbrum_tutorial.object;
 
 import android.content.Context;
+import android.graphics.Canvas;
 
 import androidx.core.content.ContextCompat;
 
 import com.example.brumbrum_tutorial.GameLoop;
-import com.example.brumbrum_tutorial.Joystick;
+import com.example.brumbrum_tutorial.gamepanel.Joystick;
 import com.example.brumbrum_tutorial.R;
 import com.example.brumbrum_tutorial.Utils;
+import com.example.brumbrum_tutorial.gamepanel.HealthBar;
 
 /**
  * Player - the main character controlled by joystick
@@ -15,19 +17,19 @@ import com.example.brumbrum_tutorial.Utils;
  */
 public class Player extends Circle{
     public   static final double SPEED_PIXELS_PER_SECOND = 400.0;
+    public static final int MAX_HEALTH_POINTS = 10;
     private  static final double MAX_SPEED = SPEED_PIXELS_PER_SECOND / GameLoop.MAX_UPS;
     private Joystick joystick;
+    private HealthBar healthBar;
+    private int healthPoints;
 
     public Player(Context context, Joystick joystick, double positionX, double positionY, double radius) {
         super(ContextCompat.getColor(context, R.color.player), positionX, positionY, radius);
 
         this.joystick = joystick;
+        this.healthBar = new HealthBar(context,this);
+        this.healthPoints = MAX_HEALTH_POINTS;
 
-/*
-        paint = new Paint();
-        int color = ContextCompat.getColor(context, R.color.player);
-        paint.setColor(color);
-*/
     }
 
     @Override
@@ -49,5 +51,19 @@ public class Player extends Circle{
         }
     }
 
+    @Override
+    public void draw(Canvas canvas) {
+        super.draw(canvas);
+        healthBar.draw(canvas);
+    }
 
+    public int getHealthPoints() {
+        return healthPoints;
+    }
+
+    public void setHealthPoints(int healthPoints) {
+        if(healthPoints >= 0){
+            this.healthPoints = healthPoints;
+        }
+    }
 }

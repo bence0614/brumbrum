@@ -1,9 +1,11 @@
-package com.example.brumbrum_tutorial;
+package com.example.brumbrum_tutorial.object;
 
 import android.content.Context;
 
 import androidx.core.content.ContextCompat;
 
+import com.example.brumbrum_tutorial.GameLoop;
+import com.example.brumbrum_tutorial.R;
 import com.example.brumbrum_tutorial.object.Circle;
 import com.example.brumbrum_tutorial.object.Player;
 
