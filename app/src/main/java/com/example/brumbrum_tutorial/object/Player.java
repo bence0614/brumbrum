@@ -11,6 +11,7 @@ import com.example.brumbrum_tutorial.gamepanel.Joystick;
 import com.example.brumbrum_tutorial.R;
 import com.example.brumbrum_tutorial.Utils;
 import com.example.brumbrum_tutorial.gamepanel.HealthBar;
+import com.example.brumbrum_tutorial.graphics.Sprite;
 
 /**
  * Player - the main character controlled by joystick
@@ -23,13 +24,15 @@ public class Player extends Circle{
     private Joystick joystick;
     private HealthBar healthBar;
     private int healthPoints;
+    private Sprite sprite;
 
-    public Player(Context context, Joystick joystick, double positionX, double positionY, double radius) {
+    public Player(Context context, Joystick joystick, double positionX, double positionY, double radius, Sprite sprite) {
         super(ContextCompat.getColor(context, R.color.player), positionX, positionY, radius);
 
         this.joystick = joystick;
         this.healthBar = new HealthBar(context,this);
         this.healthPoints = MAX_HEALTH_POINTS;
+        this.sprite = sprite;
 
     }
 
@@ -54,7 +57,12 @@ public class Player extends Circle{
 
     @Override
     public void draw(Canvas canvas, GameDisplay gameDisplay) {
-        super.draw(canvas, gameDisplay);
+
+        sprite.draw(canvas,
+                (int) gameDisplay.gameToDisplayCoordinatesX(getPositionX()) - 32,
+                (int) gameDisplay.gameToDisplayCoordinatesY(getPositionY()) - 32
+        );
+//        super.draw(canvas, gameDisplay);
         healthBar.draw(canvas, gameDisplay);
     }
 

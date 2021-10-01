@@ -17,6 +17,7 @@ import androidx.core.content.ContextCompat;
 import com.example.brumbrum_tutorial.gamepanel.GameOver;
 import com.example.brumbrum_tutorial.gamepanel.Joystick;
 import com.example.brumbrum_tutorial.gamepanel.Performance;
+import com.example.brumbrum_tutorial.graphics.SpriteSheet;
 import com.example.brumbrum_tutorial.object.Circle;
 import com.example.brumbrum_tutorial.object.Enemy;
 import com.example.brumbrum_tutorial.object.Player;
@@ -59,7 +60,8 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         joystick = new Joystick(275,735,100,50);
 
         //INITIALIZE game objects
-        player = new Player(getContext(), joystick,2*500,500, 50);
+        SpriteSheet spriteSheet = new SpriteSheet(context);
+        player = new Player(getContext(), joystick,2*500,500, 32, spriteSheet.getPlayerSprite());
 
         //Initialize game display and center it around the player
         DisplayMetrics displayMetrics = new DisplayMetrics();
