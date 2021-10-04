@@ -18,8 +18,8 @@ import com.example.brumbrum_tutorial.graphics.Sprite;
  * The class is an extension of the Circle, which is an extension of the GameObject
  */
 public class Player extends Circle{
-    public   static final double SPEED_PIXELS_PER_SECOND = 400.0;
-    public static final int MAX_HEALTH_POINTS = 10;
+    public static final double SPEED_PIXELS_PER_SECOND = 400.0;
+    public static final int MAX_HEALTH_POINTS = 5;
     private  static final double MAX_SPEED = SPEED_PIXELS_PER_SECOND / GameLoop.MAX_UPS;
     private Joystick joystick;
     private HealthBar healthBar;

@@ -18,6 +18,7 @@ import com.example.brumbrum_tutorial.gamepanel.GameOver;
 import com.example.brumbrum_tutorial.gamepanel.Joystick;
 import com.example.brumbrum_tutorial.gamepanel.Performance;
 import com.example.brumbrum_tutorial.graphics.SpriteSheet;
+import com.example.brumbrum_tutorial.map.Tilemap;
 import com.example.brumbrum_tutorial.object.Circle;
 import com.example.brumbrum_tutorial.object.Enemy;
 import com.example.brumbrum_tutorial.object.Player;
@@ -35,6 +36,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 
     private final Player player;
     private final Joystick joystick;
+    private final Tilemap tilemap;
     //private final Enemy enemy;
     private GameLoop gameLoop;
     private List<Enemy> enemyList = new ArrayList<Enemy>();
@@ -61,12 +63,15 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 
         //INITIALIZE game objects
         SpriteSheet spriteSheet = new SpriteSheet(context);
-        player = new Player(getContext(), joystick,2*500,500, 32, spriteSheet.getPlayerSprite());
+        player = new Player(context, joystick,2*500,500, 32*3, spriteSheet.getPlayerSprite());
 
         //Initialize game display and center it around the player
         DisplayMetrics displayMetrics = new DisplayMetrics();
         ((Activity)getContext()).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         gameDisplay = new GameDisplay(displayMetrics.widthPixels, displayMetrics.heightPixels, player);
+
+        //Initialize tilemap
+        tilemap = new Tilemap(spriteSheet);
 
         setFocusable(true);
     }
@@ -133,6 +138,9 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     public void draw(Canvas canvas) {
         super.draw(canvas);
+        //Draw tilemap
+        tilemap.draw(canvas, gameDisplay);
+
         performance.drawUPS(canvas);
         performance.drawFPS(canvas);
 
@@ -144,6 +152,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         for (Spell spell : spellList){
             spell.draw(canvas, gameDisplay);
         }
+
 
         // Draw game over if the player is dead
         if(player.getHealthPoints() <= 0){
