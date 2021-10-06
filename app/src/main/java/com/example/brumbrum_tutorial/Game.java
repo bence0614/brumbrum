@@ -17,6 +17,7 @@ import androidx.core.content.ContextCompat;
 import com.example.brumbrum_tutorial.gamepanel.GameOver;
 import com.example.brumbrum_tutorial.gamepanel.Joystick;
 import com.example.brumbrum_tutorial.gamepanel.Performance;
+import com.example.brumbrum_tutorial.graphics.Sprite;
 import com.example.brumbrum_tutorial.graphics.SpriteSheet;
 import com.example.brumbrum_tutorial.map.Tilemap;
 import com.example.brumbrum_tutorial.object.Circle;
@@ -46,9 +47,15 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
     private GameOver gameOver;
     private Performance performance;
     private GameDisplay gameDisplay;
+    private int startTime = 0;
+    private MainActivity mainActivity;
+    private Sprite sprite;
 
     public Game(Context context) {
         super(context);
+
+        mainActivity = new MainActivity();
+
 
         //get surface holder and add callback
         SurfaceHolder surfaceHolder = getHolder();
@@ -143,6 +150,8 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 
         performance.drawUPS(canvas);
         performance.drawFPS(canvas);
+        performance.drawTime(canvas);
+
 
         joystick.draw(canvas);
         player.draw(canvas, gameDisplay);
@@ -170,7 +179,8 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         player.update();
 
         if(Enemy.readyToSpawn()){
-            enemyList.add(new Enemy(getContext(), player));
+            SpriteSheet spriteSheet = new SpriteSheet(getContext());
+            enemyList.add(new Enemy(getContext(), player, spriteSheet.getEnemySprite()));
         }
 
         //update state of each enemy

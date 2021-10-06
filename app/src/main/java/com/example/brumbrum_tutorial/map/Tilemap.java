@@ -23,7 +23,7 @@ public class Tilemap {
         mapLayout = new MapLayout();
         this.spriteSheet = spriteSheet;
 
-        initializeTilemap();
+         initializeTilemap();
     }
 
     private void initializeTilemap() {

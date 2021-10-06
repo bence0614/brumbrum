@@ -12,6 +12,7 @@ import com.example.brumbrum_tutorial.R;
 public class Performance {
     private GameLoop gameLoop;
     private Context context;
+    private double startTime = 0;
 
     public Performance(Context context, GameLoop gameLoop){
         this.context = context;
@@ -38,5 +39,14 @@ public class Performance {
         paint.setColor(color);
         paint.setTextSize(50);
         canvas.drawText("FPS: " + averageFPS, 100, 100, paint);
+    }
+
+    public void drawTime(Canvas canvas){
+        String time = Double.toString(gameLoop.getTotalTime());
+        Paint paint = new Paint();
+        int color = ContextCompat.getColor(context, R.color.magenta);
+        paint.setColor(color);
+        paint.setTextSize(50);
+        canvas.drawText("TIME " + time, canvas.getWidth()-400, 50, paint);
     }
 }

@@ -21,6 +21,9 @@ public class SpriteSheet {
     public Sprite getPlayerSprite(){
         return new Sprite(this, new Rect(0,0,64,64));
     }
+    public Sprite getEnemySprite(){
+        return new Sprite(this, new Rect(64,0,64*2,64));
+    }
 
     public Bitmap getBitmap() {
         return bitmap;

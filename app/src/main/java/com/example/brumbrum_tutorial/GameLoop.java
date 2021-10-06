@@ -14,6 +14,8 @@ public class GameLoop extends  Thread{
     private boolean isRunning = false;
     private double averageUPS;
     private double averageFPS;
+    private double totalTime;
+    private double endTime;
 
     public GameLoop(Game game, SurfaceHolder surfaceHolder) {
         this.game = game;
@@ -26,6 +28,10 @@ public class GameLoop extends  Thread{
 
     public double getAverageFPS() {
         return averageFPS;
+    }
+
+    public double getTotalTime(){
+        return totalTime;
     }
 
     public void startLoop() {
@@ -46,9 +52,11 @@ public class GameLoop extends  Thread{
         long startTime;
         long elapsedTime;
         long sleepTime;
+        long startedTime;
 
         //Game Loop
         Canvas canvas = null;
+        startedTime = System.currentTimeMillis();
         startTime = System.currentTimeMillis();
         while (isRunning){
 
@@ -102,6 +110,7 @@ public class GameLoop extends  Thread{
                 frameCount = 0;
                 startTime = System.currentTimeMillis();
             }
+            totalTime = (double)(System.currentTimeMillis() - startedTime) /1000;
 
         }
     }

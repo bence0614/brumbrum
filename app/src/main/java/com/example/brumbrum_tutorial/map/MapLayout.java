@@ -22,7 +22,6 @@ public class MapLayout {
             for (int j = 0; j < NUMBER_OF_COLUMN_TILES; j++) {
                 //layout[i][j] = rnd.nextInt(2);
                 layout[i][j] = 1;
-                System.out.println(layout[i][j]);
             }
         }
     }

@@ -6,6 +6,7 @@ import android.graphics.Paint;
 
 import androidx.core.content.ContextCompat;
 
+import com.example.brumbrum_tutorial.GameLoop;
 import com.example.brumbrum_tutorial.R;
 
 /**
@@ -15,6 +16,7 @@ import com.example.brumbrum_tutorial.R;
 public class GameOver {
 
     private Context context;
+    private Performance performance;
 
     public GameOver(Context context){
         this.context = context;

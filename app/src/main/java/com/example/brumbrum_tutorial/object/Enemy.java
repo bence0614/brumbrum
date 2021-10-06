@@ -1,11 +1,21 @@
 package com.example.brumbrum_tutorial.object;
 
+import static android.content.Context.VIBRATOR_SERVICE;
+import static androidx.core.content.ContextCompat.getSystemService;
+
 import android.content.Context;
+import android.graphics.Canvas;
+import android.os.Build;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 
 import androidx.core.content.ContextCompat;
 
+import com.example.brumbrum_tutorial.GameDisplay;
 import com.example.brumbrum_tutorial.GameLoop;
 import com.example.brumbrum_tutorial.R;
+import com.example.brumbrum_tutorial.graphics.Sprite;
+import com.example.brumbrum_tutorial.graphics.SpriteSheet;
 
 /**
  * Enemy that follows the player
@@ -20,20 +30,17 @@ public class Enemy extends Circle{
     private static double updateUntilNextSpawn = UPDATES_PER_SPAWN;
 
     private final Player player;
+    private Sprite enemySprite;
 
-    public Enemy(Context context, Player player, double positionX, double positionY, double radius){
-        super(ContextCompat.getColor(context, R.color.enemy), positionX, positionY, radius);
-        
-        this.player = player;
-    }
 
-    public Enemy(Context context, Player player) {
+    public Enemy(Context context, Player player, Sprite enemySprite) {
         super(ContextCompat.getColor(context, R.color.enemy),
                 Math.random()*1000,
                 Math.random()*1000,
                 30
         );
         this.player = player;
+        this.enemySprite = enemySprite;
     }
 
     /**
@@ -52,6 +59,15 @@ public class Enemy extends Circle{
         }
     }
 
+    @Override
+    public void draw(Canvas canvas, GameDisplay gameDisplay) {
+
+        enemySprite.draw(canvas,
+                (int) gameDisplay.gameToDisplayCoordinatesX(getPositionX()) - 32,
+                (int) gameDisplay.gameToDisplayCoordinatesY(getPositionY()) - 32
+        );
+//        super.draw(canvas, gameDisplay);
+    }
     @Override
     public void update() {
         //update the velocity of the enemy  so that the velocity is in the direction of the player

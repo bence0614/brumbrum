@@ -21,4 +21,12 @@ public class Sprite {
                 null
         );
     }
+    public void drawMap(Canvas canvas, int x, int y) {
+        canvas.drawBitmap(
+                spriteSheet.getBitmap(),
+                rect,
+                new Rect(x,y,x+32*2,y+32*2),
+                null
+        );
+    }
 }
