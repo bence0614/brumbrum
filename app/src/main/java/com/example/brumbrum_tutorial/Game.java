@@ -2,7 +2,6 @@ package com.example.brumbrum_tutorial;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Canvas;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -24,6 +23,7 @@ import com.example.brumbrum_tutorial.object.Circle;
 import com.example.brumbrum_tutorial.object.Enemy;
 import com.example.brumbrum_tutorial.object.Player;
 import com.example.brumbrum_tutorial.object.Spell;
+import com.example.brumbrum_tutorial.sensor.Gyroscope;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -51,7 +51,12 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
     private MainActivity mainActivity;
     private Sprite sprite;
     private int enemyKilled = 0;
+    private int finalScore;
     private DatabaseHelper databaseHelper;
+    private Gyroscope gyroscope;
+    private double enemySpeed = 1;
+    private double oldSpeed = 1;
+    private double scoreMultipler = 1;
 
     public Game(Context context) {
         super(context);
@@ -84,6 +89,35 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 
         //Initialize DatabaseHelper
         databaseHelper = new DatabaseHelper(context);
+
+         gyroscope = new Gyroscope(context);
+         gyroscope.setListener(new Gyroscope.Listener() {
+            @Override
+            public void onRotation(float rx, float ry, float rz) {
+                if(ry > 0.5f){
+                    //getWindow().getDecorView().setBackgroundColor(Color.YELLOW);
+                    Log.d("MainActivity.java","rotation to Z");
+                    enemySpeed +=0.1d;
+
+                    //spellList.add(new Spell(getContext(), player));
+                }else if(ry < -0.5f){
+                    //getWindow().getDecorView().setBackgroundColor(Color.GREEN);
+                    Log.d("MainActivity.java","rotation to ----Z");
+                    enemySpeed +=0.1d;
+                    //spellList.add(new Spell(getContext(), player));
+                }else if(rx < -0.5f){
+                    //getWindow().getDecorView().setBackgroundColor(Color.GREEN);
+                    Log.d("MainActivity.java","rotation to ----Z");
+                    enemySpeed +=0.1d;
+                    //spellList.add(new Spell(getContext(), player));
+                }else if(rx < -0.5f){
+                    //getWindow().getDecorView().setBackgroundColor(Color.GREEN);
+                    Log.d("MainActivity.java","rotation to ----Z");
+                    enemySpeed +=0.1d;
+                    //spellList.add(new Spell(getContext(), player));
+                }
+            }
+        });
 
         setFocusable(true);
     }
@@ -134,6 +168,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         if (gameLoop.getState().equals(Thread.State.TERMINATED)) {
             gameLoop = new GameLoop(this, holder);
         }
+        gyroscope.register();
         gameLoop.startLoop();
     }
 
@@ -157,6 +192,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         performance.drawFPS(canvas);
         performance.drawTime(canvas);
         performance.drawScore(canvas, enemyKilled);
+        performance.drawMultipler(canvas, (int)scoreMultipler);
 
 
         joystick.draw(canvas);
@@ -171,7 +207,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 
         // Draw game over if the player is dead
         if(player.getHealthPoints() <= 0){
-            gameOver.draw(canvas);
+            //gameOver.draw(canvas);
 //            Intent intent = new Intent(getContext(), RestartActivity.class);
 //            getContext().startActivity(intent);
         }
@@ -181,6 +217,8 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         //stop updating the game if the player is dead
         if(player.getHealthPoints() <= 0){
             databaseHelper.addScore(enemyKilled);
+            setFinalScore(enemyKilled);
+            gameOver.gameOver(enemyKilled);
             return;
         }
 
@@ -189,7 +227,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 
         if(Enemy.readyToSpawn()){
             SpriteSheet spriteSheet = new SpriteSheet(getContext());
-            enemyList.add(new Enemy(getContext(), player, spriteSheet.getEnemySprite()));
+            enemyList.add(new Enemy(getContext(), player, spriteSheet.getEnemySprite(), enemySpeed));
         }
 
         //update state of each enemy
@@ -224,7 +262,11 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
                     //Remove enemy if it collides with the enemy
                     spellIterator.remove();
                     enemyIterator.remove();
-                    enemyKilled++;
+                    if(enemySpeed - oldSpeed > 0.3){
+                        oldSpeed = enemySpeed;
+                        scoreMultipler++;
+                    }
+                    enemyKilled+= 1*scoreMultipler;
                     break;
                 }
             }
@@ -233,10 +275,14 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     public void pause() {
+        gyroscope.unregister();
         gameLoop.stopLoop();
 
     }
-    public int getEnemyKilled(){
-        return enemyKilled;
+    public void setFinalScore(int enemyKilled){
+        finalScore = enemyKilled;
+    }
+    public int getFinalScore(){
+        return finalScore;
     }
 }

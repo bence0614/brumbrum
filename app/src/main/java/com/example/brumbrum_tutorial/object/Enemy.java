@@ -6,8 +6,10 @@ import static androidx.core.content.ContextCompat.getSystemService;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.os.Build;
+import android.os.Debug;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
+import android.util.Log;
 
 import androidx.core.content.ContextCompat;
 
@@ -16,13 +18,15 @@ import com.example.brumbrum_tutorial.GameLoop;
 import com.example.brumbrum_tutorial.R;
 import com.example.brumbrum_tutorial.graphics.Sprite;
 import com.example.brumbrum_tutorial.graphics.SpriteSheet;
+import com.example.brumbrum_tutorial.sensor.Gyroscope;
 
 /**
  * Enemy that follows the player
  * The Enemy class is an extension of a Circle, which is extension of a GameObject
  */
 public class Enemy extends Circle{
-    private  static final double SPEED_PIXELS_PER_SECOND = Player.SPEED_PIXELS_PER_SECOND*0.6;
+    private double speedMultipler;
+    private  static double SPEED_PIXELS_PER_SECOND = Player.SPEED_PIXELS_PER_SECOND*0.6;
     private  static final double MAX_SPEED = SPEED_PIXELS_PER_SECOND / GameLoop.MAX_UPS;
     private static final double SPAWNS_PER_MINUTE = 40;
     private static final double SPAWNS_PER_SECOND = SPAWNS_PER_MINUTE / 60.0;
@@ -33,12 +37,13 @@ public class Enemy extends Circle{
     private Sprite enemySprite;
 
 
-    public Enemy(Context context, Player player, Sprite enemySprite) {
+    public Enemy(Context context, Player player, Sprite enemySprite, double speedMultipler) {
         super(ContextCompat.getColor(context, R.color.enemy),
                 Math.random()*1000,
                 Math.random()*1000,
                 30*2
         );
+        this.speedMultipler = speedMultipler;
         this.player = player;
         this.enemySprite = enemySprite;
     }
@@ -85,8 +90,9 @@ public class Enemy extends Circle{
 
         //set velocity in the direction to the player
         if(distanceToPlayer > 0){ // no divide by zero
-            velocityX = directionX*MAX_SPEED;
-            velocityY = directionY*MAX_SPEED;
+            velocityX = directionX*MAX_SPEED*speedMultipler;
+            velocityY = directionY*MAX_SPEED*speedMultipler;
+            System.out.println("speedmulti: " + speedMultipler);
         }else{
             velocityX = 0;
             velocityY = 0;

@@ -54,6 +54,13 @@ public class Performance {
         int color = ContextCompat.getColor(context, R.color.player);
         paint.setColor(color);
         paint.setTextSize(50);
-        canvas.drawText("SCORE: " + score, (int)(canvas.getWidth()/2), 50, paint);
+        canvas.drawText("SCORE: " + score, (int)(canvas.getWidth()/2), 100, paint);
+    }
+    public void drawMultipler(Canvas canvas, int multipler){
+        Paint paint = new Paint();
+        int color = ContextCompat.getColor(context, R.color.player);
+        paint.setColor(color);
+        paint.setTextSize(50);
+        canvas.drawText("Multipler " + multipler, (int)(canvas.getWidth()/2), 50, paint);
     }
 }

@@ -4,6 +4,9 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 
+import androidx.core.content.ContextCompat;
+
+import com.example.brumbrum_tutorial.R;
 import com.example.brumbrum_tutorial.Utils;
 
 public class Joystick {
@@ -38,7 +41,7 @@ public class Joystick {
         outerCirclePaint.setStyle(Paint.Style.FILL_AND_STROKE);
 
         innerCirclePaint = new Paint();
-        innerCirclePaint.setColor(Color.BLUE);
+        innerCirclePaint.setColor(Color.argb(98,95, 103, 100));
         innerCirclePaint.setStyle(Paint.Style.FILL_AND_STROKE);
     }
     public void draw(Canvas canvas) {

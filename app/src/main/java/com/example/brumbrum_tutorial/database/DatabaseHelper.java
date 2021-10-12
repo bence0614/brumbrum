@@ -18,6 +18,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String TABLE_NAME = "ScoreBoard";
     private static final String COLUMN_ID = "_id";
     private static final String COLUMN_SCORE = "player_score";
+    private int score;
 
     public DatabaseHelper(@Nullable Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -39,6 +40,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public void addScore(int score){
+        this.score = score;
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
 
@@ -55,5 +57,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             cursor = db.rawQuery(query, null);
         }
         return cursor;
+    }
+
+    public int getScore() {
+        return score;
     }
 }

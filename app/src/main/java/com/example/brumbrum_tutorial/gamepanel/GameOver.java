@@ -19,6 +19,7 @@ import com.example.brumbrum_tutorial.RestartActivity;
 public class GameOver{
 
     private Context context;
+    private int score;
 
     public GameOver(Context context){
         this.context = context;
@@ -37,7 +38,16 @@ public class GameOver{
         paint.setTextSize(textSize);
         canvas.drawText(text, x, y, paint);
 
+
+    }
+    public void gameOver(int score){
+        this.score = score;
+
         Intent intent = new Intent(context, RestartActivity.class);
         context.startActivity(intent);
+    }
+
+    public int getScore() {
+        return score;
     }
 }

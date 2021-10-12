@@ -9,6 +9,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.VibrationEffect;
@@ -19,6 +20,8 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 
+import com.example.brumbrum_tutorial.sensor.Gyroscope;
+
 /**
  * MainActivity is the entry point to our project
  */
@@ -27,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Game game;
     private Button scoreboard_button;
+    private Gyroscope gyroscope;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +61,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        //setContentView(game);
         try{
             Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
             // Vibrate for 500 milliseconds
@@ -70,6 +73,20 @@ public class MainActivity extends AppCompatActivity {
         }catch (Exception e){
             e.printStackTrace();
         }
+
+          gyroscope = new Gyroscope(this);
+//        gyroscope.setListener(new Gyroscope.Listener() {
+//            @Override
+//            public void onRotation(float rx, float ry, float rz) {
+//                if(rz > 1.0f){
+//                    //getWindow().getDecorView().setBackgroundColor(Color.YELLOW);
+//                    Log.d("MainActivity.java","rotation to Z");
+//                }else if(rz < -1.0f){
+//                    //getWindow().getDecorView().setBackgroundColor(Color.GREEN);
+//                    Log.d("MainActivity.java","rotation to ----Z");
+//                }
+//            }
+//        });
     }
     @Override
     protected void onStart(){
@@ -79,10 +96,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume(){
         Log.d("MainActivity.java","onResume");
         super.onResume();
+        gyroscope.register();
     }
     protected void onPause(){
         Log.d("MainActivity.java","onPause");
         game.pause();
+        gyroscope.unregister();
         //setContentView(R.layout.activity_main);
         super.onPause();
     }

@@ -9,9 +9,10 @@
     <color name="white">#FFFFFFFF</color>
     <color name="magenta">#FF09FF</color>
     <color name="player">#FF0000</color>
-    <color name="spell">#FF12FF</color>
+    <color name="spell">#b85c00</color>
     <color name="enemy">#FF1BBF</color>
     <color name="healthBarBorder">#A1A1A1</color>
     <color name="healthBarHealth">#00FF00</color>
     <color name="gameOver">#A00F04</color>
+    <color name="joystick">#5f6764</color>
 </resources>

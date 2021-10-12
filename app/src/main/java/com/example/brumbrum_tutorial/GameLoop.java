@@ -80,6 +80,8 @@ public class GameLoop extends  Thread{
                         e.printStackTrace();
                     }
                 }
+
+
             }
 
             //pause game loop to not exceed target UPS
