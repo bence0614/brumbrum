@@ -2,8 +2,8 @@ package com.example.brumbrum_tutorial;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Canvas;
-import android.graphics.Paint;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -12,7 +12,6 @@ import android.view.SurfaceView;
 
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 
 import com.example.brumbrum_tutorial.gamepanel.GameOver;
 import com.example.brumbrum_tutorial.gamepanel.Joystick;
@@ -50,6 +49,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
     private int startTime = 0;
     private MainActivity mainActivity;
     private Sprite sprite;
+    private int enemyKilled = 0;
 
     public Game(Context context) {
         super(context);
@@ -151,6 +151,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         performance.drawUPS(canvas);
         performance.drawFPS(canvas);
         performance.drawTime(canvas);
+        performance.drawScore(canvas, enemyKilled);
 
 
         joystick.draw(canvas);
@@ -166,6 +167,8 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         // Draw game over if the player is dead
         if(player.getHealthPoints() <= 0){
             gameOver.draw(canvas);
+//            Intent intent = new Intent(getContext(), RestartActivity.class);
+//            getContext().startActivity(intent);
         }
     }
 
@@ -215,6 +218,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
                     //Remove enemy if it collides with the enemy
                     spellIterator.remove();
                     enemyIterator.remove();
+                    enemyKilled++;
                     break;
                 }
             }
@@ -224,5 +228,9 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 
     public void pause() {
         gameLoop.stopLoop();
+
+    }
+    public int getEnemyKilled(){
+        return enemyKilled;
     }
 }

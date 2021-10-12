@@ -33,7 +33,7 @@
         style="@style/Widget.MaterialComponents.Button.TextButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="START"
+        android:text="Restart"
         android:textColor="#ffffff"
         android:textSize="48sp"
         android:textStyle="bold"
@@ -46,9 +46,10 @@
         />
 
     <TextView
+        android:id="@+id/score_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Brumm Brumm"
+        android:text="Score: "
         android:textColor="#ffffff"
         android:textSize="48sp"
         android:textStyle="bold"
@@ -58,5 +59,6 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.121" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

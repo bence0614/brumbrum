@@ -37,7 +37,7 @@ public class Enemy extends Circle{
         super(ContextCompat.getColor(context, R.color.enemy),
                 Math.random()*1000,
                 Math.random()*1000,
-                30
+                30*2
         );
         this.player = player;
         this.enemySprite = enemySprite;

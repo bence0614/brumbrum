@@ -49,4 +49,11 @@ public class Performance {
         paint.setTextSize(50);
         canvas.drawText("TIME " + time, canvas.getWidth()-400, 50, paint);
     }
+    public void drawScore(Canvas canvas, int score){
+        Paint paint = new Paint();
+        int color = ContextCompat.getColor(context, R.color.player);
+        paint.setColor(color);
+        paint.setTextSize(50);
+        canvas.drawText("SCORE: " + score, (int)(canvas.getWidth()/2), 50, paint);
+    }
 }
