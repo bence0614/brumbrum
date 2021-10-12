@@ -8,6 +8,7 @@ import android.animation.Animator;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.VibrationEffect;
@@ -25,6 +26,7 @@ import android.widget.Button;
 public class MainActivity extends AppCompatActivity {
 
     private Game game;
+    private Button scoreboard_button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +47,14 @@ public class MainActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 setContentView(game);
+            }
+        });
+        scoreboard_button = findViewById(R.id.scoreboard_button);
+        scoreboard_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, DatabaseMain.class);
+                startActivity(intent);
             }
         });
         //setContentView(game);

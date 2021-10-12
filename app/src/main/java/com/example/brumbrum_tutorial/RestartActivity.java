@@ -1,26 +1,19 @@
 package com.example.brumbrum_tutorial;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 
-import android.content.Context;
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.os.Build;
+import android.content.Intent;
 import android.os.Bundle;
-import android.os.VibrationEffect;
-import android.os.Vibrator;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.example.brumbrum_tutorial.gamepanel.Performance;
-
 public class RestartActivity extends AppCompatActivity {
 
-
+    Button scoreboard_button;
     private Game game;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,6 +26,15 @@ public class RestartActivity extends AppCompatActivity {
                 setContentView(game);
             }
         });
+
+        scoreboard_button = findViewById(R.id.scoreboard_button);
+        scoreboard_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(RestartActivity.this, DatabaseMain.class);
+                startActivity(intent);
+            }
+        });
         //setContentView(game);
 
     }
@@ -40,12 +42,6 @@ public class RestartActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-
-        int score = game.getEnemyKilled();
-        TextView tv = (TextView) findViewById(R.id.score_text);
-        tv.setText("Score :" + Integer.toString(score));
-
-
     }
     protected void onResume(){
         Log.d("RestartActivity.java","onResume");

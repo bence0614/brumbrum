@@ -12,6 +12,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Brumbrum_tutorial">
         <activity
+            android:name=".DatabaseMain"
+            android:exported="true"
+            />
+        <activity
             android:name=".RestartActivity"
             android:exported="true" />
         <activity

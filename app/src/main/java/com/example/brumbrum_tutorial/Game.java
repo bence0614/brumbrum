@@ -13,6 +13,7 @@ import android.view.SurfaceView;
 
 import androidx.annotation.NonNull;
 
+import com.example.brumbrum_tutorial.database.DatabaseHelper;
 import com.example.brumbrum_tutorial.gamepanel.GameOver;
 import com.example.brumbrum_tutorial.gamepanel.Joystick;
 import com.example.brumbrum_tutorial.gamepanel.Performance;
@@ -50,6 +51,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
     private MainActivity mainActivity;
     private Sprite sprite;
     private int enemyKilled = 0;
+    private DatabaseHelper databaseHelper;
 
     public Game(Context context) {
         super(context);
@@ -79,6 +81,9 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 
         //Initialize tilemap
         tilemap = new Tilemap(spriteSheet);
+
+        //Initialize DatabaseHelper
+        databaseHelper = new DatabaseHelper(context);
 
         setFocusable(true);
     }
@@ -175,6 +180,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
     public void update() {
         //stop updating the game if the player is dead
         if(player.getHealthPoints() <= 0){
+            databaseHelper.addScore(enemyKilled);
             return;
         }
 
