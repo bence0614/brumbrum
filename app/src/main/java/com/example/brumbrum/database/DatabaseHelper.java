@@ -67,6 +67,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return maxid;
     }
 
+    public double[] getLastScore(){
+        SQLiteDatabase db=this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT player_score, player_time FROM "+TABLE_NAME+ " WHERE _id = "+getLatIndex(), null);
+        cursor.moveToFirst();
+
+        double[] lastScore = new double[2];
+        lastScore[0] = (double) cursor.getInt(0);
+        lastScore[1] = cursor.getDouble(1);
+
+        return lastScore;
+    }
+
     public boolean dataAlreadyExists(double totalTime){
         SQLiteDatabase db=this.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT player_time FROM "+TABLE_NAME+ " WHERE _id = "+getLatIndex(), null);

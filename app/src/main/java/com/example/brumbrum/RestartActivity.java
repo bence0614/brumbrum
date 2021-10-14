@@ -9,20 +9,29 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.brumbrum.database.DatabaseHelper;
+
 public class RestartActivity extends AppCompatActivity {
 
     Button scoreboard_button;
     private Game game;
+    private DatabaseHelper databaseHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         game = new Game(this);
+        databaseHelper = new DatabaseHelper(this);
         setContentView(R.layout.activity_restart);
 
-        TextView score_value;
+        TextView score_value, time_score_value_text;
+
         score_value = (TextView)findViewById(R.id.score_value);
-        score_value.setText(Integer.toString(game.getFinalScore()));
+        score_value.setText(Integer.toString((int)databaseHelper.getLastScore()[0]));
+
+        time_score_value_text = (TextView)findViewById(R.id.time_score_value_text);
+        time_score_value_text.setText(Double.toString(databaseHelper.getLastScore()[1]));
+
         Button button = (Button) findViewById(R.id.satartButton);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
