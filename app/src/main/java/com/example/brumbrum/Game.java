@@ -57,6 +57,8 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
     private double enemySpeed = 1;
     private double oldSpeed = 1;
     private double scoreMultipler = 1;
+    private GameInformations gameInformations;
+    private boolean first = true;
 
     public Game(Context context) {
         super(context);
@@ -89,6 +91,8 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 
         //Initialize DatabaseHelper
         databaseHelper = new DatabaseHelper(context);
+
+        gameInformations = new GameInformations(gameLoop.getTotalTime(), enemyKilled);
 
          gyroscope = new Gyroscope(context);
          gyroscope.setListener(new Gyroscope.Listener() {
@@ -216,7 +220,13 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
     public void update() {
         //stop updating the game if the player is dead
         if(player.getHealthPoints() <= 0){
-            databaseHelper.addScore(enemyKilled);
+            double time = gameLoop.getTotalTime();
+
+            if(first || !databaseHelper.dataAlreadyExists(time)){
+                first = false;
+                databaseHelper.addScore(enemyKilled, time);
+            }
+
             setFinalScore(enemyKilled);
             gameOver.gameOver(enemyKilled);
             return;
@@ -284,5 +294,8 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
     }
     public int getFinalScore(){
         return finalScore;
+    }
+    public GameInformations getGameInformations(){
+        return gameInformations;
     }
 }

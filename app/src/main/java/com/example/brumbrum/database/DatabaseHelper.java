@@ -17,7 +17,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String TABLE_NAME = "ScoreBoard";
     private static final String COLUMN_ID = "_id";
     private static final String COLUMN_SCORE = "player_score";
-    private int score;
+    private static final String COLUMN_TIME = "player_time";
 
     public DatabaseHelper(@Nullable Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -28,7 +28,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         String query = "CREATE TABLE " + TABLE_NAME +
                 " (" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                COLUMN_SCORE + " INTEGER);";
+                COLUMN_SCORE + " INTEGER, " +
+                COLUMN_TIME + " DOUBLE);";
         db.execSQL(query);
     }
 
@@ -38,12 +39,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public void addScore(int score){
-        this.score = score;
+    public void addScore(int score, double time){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
 
         cv.put(COLUMN_SCORE, score);
+        cv.put(COLUMN_TIME, time);
         db.insert(TABLE_NAME,null, cv);
     }
 
@@ -58,7 +59,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return cursor;
     }
 
-    public int getScore() {
-        return score;
+    public int getLatIndex(){
+        SQLiteDatabase db=this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT MAX("+COLUMN_ID+") FROM "+TABLE_NAME, null);
+        int maxid = (cursor.moveToFirst() ? cursor.getInt(0) : 0);
+
+        return maxid;
+    }
+
+    public boolean dataAlreadyExists(double totalTime){
+        SQLiteDatabase db=this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT player_time FROM "+TABLE_NAME+ " WHERE _id = "+getLatIndex(), null);
+        cursor.moveToFirst();
+
+        double time = cursor.getDouble(2);
+
+        if(time == totalTime){
+            return true;
+        }
+        return false;
     }
 }

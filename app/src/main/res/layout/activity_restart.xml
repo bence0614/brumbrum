@@ -29,7 +29,7 @@
         app:layout_constraintEnd_toEndOf="@+id/imageView" />
 
     <Button
-        android:id="@+id/textButton"
+        android:id="@+id/satartButton"
         style="@style/Widget.MaterialComponents.Button.TextButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

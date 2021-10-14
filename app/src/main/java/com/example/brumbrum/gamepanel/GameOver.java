@@ -7,6 +7,7 @@ import android.graphics.Paint;
 
 import androidx.core.content.ContextCompat;
 
+import com.example.brumbrum.MainActivity;
 import com.example.brumbrum.R;
 import com.example.brumbrum.RestartActivity;
 

@@ -14,6 +14,7 @@
         android:src="@drawable/bg" />
 
     <ImageView
+        android:id="@+id/imageView2"
         android:layout_width="228dp"
         android:layout_height="415dp"
         android:src="@drawable/cowboy"
@@ -29,7 +30,7 @@
         app:layout_constraintEnd_toEndOf="@+id/imageView" />
 
     <Button
-        android:id="@+id/textButton"
+        android:id="@+id/satartButton"
         style="@style/Widget.MaterialComponents.Button.TextButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -46,7 +47,7 @@
         />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/titleText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Brumm Brumm"
@@ -64,10 +65,10 @@
         android:id="@+id/scoreboard_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="28dp"
+        android:layout_marginEnd="44dp"
+        android:layout_marginBottom="44dp"
         android:text="Score Board"
-        app:layout_constraintBottom_toBottomOf="@+id/textView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/textView" />
+        app:layout_constraintBottom_toBottomOf="@+id/imageView2"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -23,7 +23,7 @@ public class RestartActivity extends AppCompatActivity {
         TextView score_value;
         score_value = (TextView)findViewById(R.id.score_value);
         score_value.setText(Integer.toString(game.getFinalScore()));
-        Button button = (Button) findViewById(R.id.textButton);
+        Button button = (Button) findViewById(R.id.satartButton);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 setContentView(game);

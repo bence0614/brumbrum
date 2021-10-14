@@ -11,7 +11,9 @@ import android.os.Vibrator;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
+import com.example.brumbrum.gamepanel.GameOver;
 import com.example.brumbrum.sensor.Gyroscope;
 
 /**
@@ -23,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
     private Game game;
     private Button scoreboard_button;
     private Gyroscope gyroscope;
+    private GameOver gameOver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
         game = new Game(this);
         setContentView(R.layout.activity_main);
 
-        Button button = (Button) findViewById(R.id.textButton);
+        Button button = (Button) findViewById(R.id.satartButton);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 setContentView(game);
@@ -66,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-          gyroscope = new Gyroscope(this);
+          //gyroscope = new Gyroscope(this);
 //        gyroscope.setListener(new Gyroscope.Listener() {
 //            @Override
 //            public void onRotation(float rx, float ry, float rz) {
@@ -88,22 +91,34 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume(){
         Log.d("MainActivity.java","onResume");
         super.onResume();
-        gyroscope.register();
+        //gyroscope.register();
     }
+    @Override
     protected void onPause(){
         Log.d("MainActivity.java","onPause");
         game.pause();
-        gyroscope.unregister();
+
+        //gyroscope.unregister();
         //setContentView(R.layout.activity_main);
         super.onPause();
     }
+    @Override
     protected void onStop(){
         Log.d("MainActivity.java","onStop");
         //setContentView(R.layout.activity_main);
         super.onStop();
     }
+    @Override
     protected void onDestroy(){
         Log.d("MainActivity.java","onDestroy");
         super.onDestroy();
+    }
+    @Override
+    public void onBackPressed(){
+        Intent a = new Intent(Intent.ACTION_MAIN);
+        a.addCategory(Intent.CATEGORY_HOME);
+        a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(a);
+
     }
 }

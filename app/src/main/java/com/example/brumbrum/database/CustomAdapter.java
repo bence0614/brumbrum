@@ -16,11 +16,12 @@ import java.util.ArrayList;
 public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHolder>{
 
     private Context context;
-    private ArrayList<String> score_id, score_value;
-    public CustomAdapter(Context context, ArrayList<String> score_id, ArrayList<String> score_value) {
+    private ArrayList<String> score_id, score_value, time_value;
+    public CustomAdapter(Context context, ArrayList<String> score_id, ArrayList<String> score_value, ArrayList<String> time_value) {
         this.context = context;
         this.score_id = score_id;
         this.score_value = score_value;
+        this.time_value = time_value;
     }
 
     @NonNull
@@ -35,6 +36,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         holder.score_id_text.setText(String.valueOf(score_id.get(position)));
         holder.score_value_text.setText(String.valueOf(score_value.get(position)));
+        holder.time_value_text.setText(String.valueOf(time_value.get(position)));
     }
 
     @Override
@@ -43,12 +45,13 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        TextView score_id_text,score_value_text;
+        TextView score_id_text,score_value_text, time_value_text;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             score_id_text = itemView.findViewById(R.id.score_id_text);
             score_value_text = itemView.findViewById(R.id.score_value_text);
+            time_value_text = itemView.findViewById(R.id.time_value_text);
         }
     }
 }

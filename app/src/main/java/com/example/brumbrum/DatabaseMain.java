@@ -18,7 +18,7 @@ public class DatabaseMain extends AppCompatActivity {
     RecyclerView recyclerView;
 
     DatabaseHelper myDB;
-    ArrayList<String> score_id, score_value;
+    ArrayList<String> score_id, score_value, time_value;
     CustomAdapter customAdapter;
 
     @Override
@@ -31,10 +31,11 @@ public class DatabaseMain extends AppCompatActivity {
         myDB = new DatabaseHelper(DatabaseMain.this);
         score_id = new ArrayList<>();
         score_value = new ArrayList<>();
+        time_value = new ArrayList<>();
 
         storeDataInArrays();
 
-        customAdapter = new CustomAdapter(DatabaseMain.this, score_id, score_value);
+        customAdapter = new CustomAdapter(DatabaseMain.this, score_id, score_value, time_value);
         recyclerView.setAdapter(customAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(DatabaseMain.this));
     }
@@ -46,6 +47,7 @@ public class DatabaseMain extends AppCompatActivity {
             while (cursor.moveToNext()) {
                 score_id.add(cursor.getString(0));
                 score_value.add(cursor.getString(1));
+                time_value.add(cursor.getString(2));
             }
         }
     }
