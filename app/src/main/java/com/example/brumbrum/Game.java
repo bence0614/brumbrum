@@ -13,10 +13,8 @@ import android.view.SurfaceView;
 import androidx.annotation.NonNull;
 
 import com.example.brumbrum.database.DatabaseHelper;
-import com.example.brumbrum.gamepanel.GameOver;
 import com.example.brumbrum.gamepanel.Joystick;
 import com.example.brumbrum.gamepanel.Performance;
-import com.example.brumbrum.graphics.Sprite;
 import com.example.brumbrum.graphics.SpriteSheet;
 import com.example.brumbrum.map.Tilemap;
 import com.example.brumbrum.object.Circle;
@@ -38,33 +36,29 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
     private final Player player;
     private final Joystick joystick;
     private final Tilemap tilemap;
-    //private final Enemy enemy;
-    private GameLoop gameLoop;
+
     private List<Enemy> enemyList = new ArrayList<Enemy>();
     private List<Spell> spellList = new ArrayList<Spell>();
     private int joystickPointerId = 0;
     private int numberOfSpellsToCast = 0;
+
+    private GameLoop gameLoop;
     private GameOver gameOver;
     private Performance performance;
     private GameDisplay gameDisplay;
-    private int startTime = 0;
-    private MainActivity mainActivity;
-    private Sprite sprite;
-    private int enemyKilled = 0;
-    private int finalScore;
     private DatabaseHelper databaseHelper;
     private Gyroscope gyroscope;
+
+    private int enemyKilled = 0;
     private double enemySpeed = 1;
     private double oldSpeed = 1;
     private double scoreMultipler = 1;
-    private GameInformations gameInformations;
+    private int finalScore;
+
     private boolean first = true;
 
     public Game(Context context) {
         super(context);
-
-        mainActivity = new MainActivity();
-
 
         //get surface holder and add callback
         SurfaceHolder surfaceHolder = getHolder();
@@ -92,33 +86,24 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         //Initialize DatabaseHelper
         databaseHelper = new DatabaseHelper(context);
 
-        gameInformations = new GameInformations(gameLoop.getTotalTime(), enemyKilled);
-
-         gyroscope = new Gyroscope(context);
-         gyroscope.setListener(new Gyroscope.Listener() {
+        //Detecting if the user's hand is shaking with gyroscope sensor
+        //Increasing the enemies speed if rotation detected
+        gyroscope = new Gyroscope(context);
+        gyroscope.setListener(new Gyroscope.Listener() {
             @Override
             public void onRotation(float rx, float ry, float rz) {
-                if(ry > 0.5f){
-                    //getWindow().getDecorView().setBackgroundColor(Color.YELLOW);
-                    Log.d("MainActivity.java","rotation to Z");
+                if(ry > 0.3f){
+                    Log.d("Game","rotation to RY");
                     enemySpeed +=0.1d;
-
-                    //spellList.add(new Spell(getContext(), player));
-                }else if(ry < -0.5f){
-                    //getWindow().getDecorView().setBackgroundColor(Color.GREEN);
-                    Log.d("MainActivity.java","rotation to ----Z");
+                }else if(ry < -0.3f){
+                    Log.d("Game","rotation to -RY");
                     enemySpeed +=0.1d;
-                    //spellList.add(new Spell(getContext(), player));
-                }else if(rx < -0.5f){
-                    //getWindow().getDecorView().setBackgroundColor(Color.GREEN);
-                    Log.d("MainActivity.java","rotation to ----Z");
+                }else if(rx < -0.3f){
+                    Log.d("Game","rotation to RX");
                     enemySpeed +=0.1d;
-                    //spellList.add(new Spell(getContext(), player));
-                }else if(rx < -0.5f){
-                    //getWindow().getDecorView().setBackgroundColor(Color.GREEN);
-                    Log.d("MainActivity.java","rotation to ----Z");
+                }else if(rx < -0.3f){
+                    Log.d("Game","rotation to -RX");
                     enemySpeed +=0.1d;
-                    //spellList.add(new Spell(getContext(), player));
                 }
             }
         });
@@ -129,6 +114,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
 
+        //Handling multiple tuch event from the user
         switch (event.getActionMasked()){
             case MotionEvent.ACTION_DOWN:
             case MotionEvent.ACTION_POINTER_DOWN:
@@ -161,7 +147,6 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
                     joystick.resetActuator();
                 }
                 return true;
-
         }
         return super.onTouchEvent(event);
     }
@@ -172,7 +157,9 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         if (gameLoop.getState().equals(Thread.State.TERMINATED)) {
             gameLoop = new GameLoop(this, holder);
         }
+        //register gyroscope
         gyroscope.register();
+        //start the gameloop
         gameLoop.startLoop();
     }
 
@@ -192,13 +179,14 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         //Draw tilemap
         tilemap.draw(canvas, gameDisplay);
 
+        //Draw performance details
         performance.drawUPS(canvas);
         performance.drawFPS(canvas);
         performance.drawTime(canvas);
-        performance.drawScore(canvas, enemyKilled);
         performance.drawMultipler(canvas, (int)scoreMultipler);
+        performance.drawScore(canvas, enemyKilled);
 
-
+        //Drawing gameObjects
         joystick.draw(canvas);
         player.draw(canvas, gameDisplay);
         for (Enemy enemy : enemyList){
@@ -207,31 +195,24 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         for (Spell spell : spellList){
             spell.draw(canvas, gameDisplay);
         }
-
-
-        // Draw game over if the player is dead
-        if(player.getHealthPoints() <= 0){
-            //gameOver.draw(canvas);
-//            Intent intent = new Intent(getContext(), RestartActivity.class);
-//            getContext().startActivity(intent);
-        }
     }
 
     public void update() {
+
         //stop updating the game if the player is dead
         if(player.getHealthPoints() <= 0){
             double time = gameLoop.getTotalTime();
 
-            if(first || !databaseHelper.dataAlreadyExists(time)){
+            if(first){
                 first = false;
                 databaseHelper.addScore(enemyKilled, time);
             }
 
-            setFinalScore(enemyKilled);
             gameOver.gameOver(enemyKilled);
             return;
         }
 
+        //Update gameObjects
         joystick.update();
         player.update();
 
@@ -285,17 +266,10 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     public void pause() {
+        //Unregister gyroscope
         gyroscope.unregister();
+        //stop gameLoop
         gameLoop.stopLoop();
 
-    }
-    public void setFinalScore(int enemyKilled){
-        finalScore = enemyKilled;
-    }
-    public int getFinalScore(){
-        return finalScore;
-    }
-    public GameInformations getGameInformations(){
-        return gameInformations;
     }
 }

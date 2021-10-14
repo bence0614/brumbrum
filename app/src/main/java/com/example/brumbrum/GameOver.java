@@ -1,4 +1,4 @@
-package com.example.brumbrum.gamepanel;
+package com.example.brumbrum;
 
 import android.content.Context;
 import android.content.Intent;
@@ -12,7 +12,7 @@ import com.example.brumbrum.R;
 import com.example.brumbrum.RestartActivity;
 
 /**
- * GameOver is  panel that draws "game over" text to the screen
+ * GameOver is a class handling game over and starts the restart activity
  */
 
 public class GameOver{
@@ -24,29 +24,10 @@ public class GameOver{
         this.context = context;
     }
 
-    public void draw(Canvas canvas){
-        String text = "Game Over";
-
-        float x = 800;
-        float y = 200;
-
-        Paint paint = new Paint();
-        int color = ContextCompat.getColor(context, R.color.gameOver);
-        paint.setColor(color);
-        float textSize = 150;
-        paint.setTextSize(textSize);
-        canvas.drawText(text, x, y, paint);
-
-
-    }
     public void gameOver(int score){
         this.score = score;
 
         Intent intent = new Intent(context, RestartActivity.class);
         context.startActivity(intent);
-    }
-
-    public int getScore() {
-        return score;
     }
 }

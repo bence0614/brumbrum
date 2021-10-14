@@ -20,7 +20,6 @@ public class MapLayout {
 
         for (int i = 0; i < NUMBER_OF_ROW_TILES; i++) {
             for (int j = 0; j < NUMBER_OF_COLUMN_TILES; j++) {
-                //layout[i][j] = rnd.nextInt(2);
                 layout[i][j] = 1;
             }
         }

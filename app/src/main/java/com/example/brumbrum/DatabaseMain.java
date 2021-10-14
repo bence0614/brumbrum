@@ -13,6 +13,9 @@ import com.example.brumbrum.database.DatabaseHelper;
 
 import java.util.ArrayList;
 
+/**
+ * Main activity for the database
+ */
 public class DatabaseMain extends AppCompatActivity {
 
     RecyclerView recyclerView;
@@ -26,15 +29,17 @@ public class DatabaseMain extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_viewscores);
-        recyclerView = findViewById(R.id.recyclerView);
 
         myDB = new DatabaseHelper(DatabaseMain.this);
         score_id = new ArrayList<>();
         score_value = new ArrayList<>();
         time_value = new ArrayList<>();
 
+        //Adding the database into arrays
         storeDataInArrays();
 
+        //Adding the database into a recyclerView
+        recyclerView = findViewById(R.id.recyclerView);
         customAdapter = new CustomAdapter(DatabaseMain.this, score_id, score_value, time_value);
         recyclerView.setAdapter(customAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(DatabaseMain.this));

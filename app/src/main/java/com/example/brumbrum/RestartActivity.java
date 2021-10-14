@@ -11,9 +11,14 @@ import android.widget.TextView;
 
 import com.example.brumbrum.database.DatabaseHelper;
 
+/**
+ * The activity shown on game over
+ * Displaying the score of the game
+ * Providing the opportuniti to start a new game by pressing restart
+ */
 public class RestartActivity extends AppCompatActivity {
 
-    Button scoreboard_button;
+    private Button scoreboard_button;
     private Game game;
     private DatabaseHelper databaseHelper;
 
@@ -24,7 +29,8 @@ public class RestartActivity extends AppCompatActivity {
         databaseHelper = new DatabaseHelper(this);
         setContentView(R.layout.activity_restart);
 
-        TextView score_value, time_score_value_text;
+        //Initializing the TextViews
+        TextView score_value, time_score_value_text, best_score_value_text;
 
         score_value = (TextView)findViewById(R.id.score_value);
         score_value.setText(Integer.toString((int)databaseHelper.getLastScore()[0]));
@@ -32,6 +38,10 @@ public class RestartActivity extends AppCompatActivity {
         time_score_value_text = (TextView)findViewById(R.id.time_score_value_text);
         time_score_value_text.setText(Double.toString(databaseHelper.getLastScore()[1]));
 
+        best_score_value_text = (TextView)findViewById(R.id.score_best_value_text);
+        best_score_value_text.setText(Integer.toString(databaseHelper.getBestScore()));
+
+        //Initializing the buttons
         Button button = (Button) findViewById(R.id.satartButton);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -47,10 +57,9 @@ public class RestartActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        //setContentView(game);
-
     }
 
+    //Override methods
     @Override
     protected void onStart() {
         super.onStart();
@@ -64,13 +73,11 @@ public class RestartActivity extends AppCompatActivity {
     protected void onPause(){
         Log.d("RestartActivity.java","onPause");
         game.pause();
-        //setContentView(R.layout.activity_main);
         super.onPause();
     }
     @Override
     protected void onStop(){
         Log.d("RestartActivity.java","onStop");
-        //setContentView(R.layout.activity_main);
         super.onStop();
     }
     @Override
@@ -78,14 +85,12 @@ public class RestartActivity extends AppCompatActivity {
         Log.d("RestartActivity.java","onDestroy");
         super.onDestroy();
     }
-
     @Override
     public void onBackPressed(){
         Intent a = new Intent(Intent.ACTION_MAIN);
         a.addCategory(Intent.CATEGORY_HOME);
         a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(a);
-
     }
 
 }

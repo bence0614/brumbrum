@@ -9,6 +9,10 @@ import androidx.core.content.ContextCompat;
 import com.example.brumbrum.GameLoop;
 import com.example.brumbrum.R;
 
+/**
+ * Drawing the game perfomance details on screen
+ */
+
 public class Performance {
     private GameLoop gameLoop;
     private Context context;

@@ -4,6 +4,10 @@ import android.graphics.Canvas;
 import android.util.Log;
 import android.view.SurfaceHolder;
 
+/**
+ * GameLoop is responsible for looping and rendering the game
+ * Calculates the FPS, UPS and the ElapsedTime
+ */
 public class GameLoop extends  Thread{
     public static final double MAX_UPS = 30.0;
     private static final double UPS_PERIOD = 1E+3/MAX_UPS;
@@ -15,7 +19,6 @@ public class GameLoop extends  Thread{
     private double averageUPS;
     private double averageFPS;
     private double totalTime;
-    private double endTime;
 
     public GameLoop(Game game, SurfaceHolder surfaceHolder) {
         this.game = game;
@@ -80,8 +83,6 @@ public class GameLoop extends  Thread{
                         e.printStackTrace();
                     }
                 }
-
-
             }
 
             //pause game loop to not exceed target UPS
@@ -113,7 +114,6 @@ public class GameLoop extends  Thread{
                 startTime = System.currentTimeMillis();
             }
             totalTime = (double)(System.currentTimeMillis() - startedTime) /1000;
-
         }
     }
 

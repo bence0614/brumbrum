@@ -8,6 +8,11 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
 
+/**
+ * Creates the database
+ * Stores the function needed to access and modify the database
+ */
+
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private Context context;
@@ -67,6 +72,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return maxid;
     }
 
+    public int getBestScore(){
+        SQLiteDatabase db=this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT MAX("+COLUMN_SCORE+") FROM "+TABLE_NAME, null);
+        int maxScore = (cursor.moveToFirst() ? cursor.getInt(0) : 0);
+
+        return maxScore;
+    }
+
     public double[] getLastScore(){
         SQLiteDatabase db=this.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT player_score, player_time FROM "+TABLE_NAME+ " WHERE _id = "+getLatIndex(), null);
@@ -77,18 +90,5 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         lastScore[1] = cursor.getDouble(1);
 
         return lastScore;
-    }
-
-    public boolean dataAlreadyExists(double totalTime){
-        SQLiteDatabase db=this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT player_time FROM "+TABLE_NAME+ " WHERE _id = "+getLatIndex(), null);
-        cursor.moveToFirst();
-
-        double time = cursor.getDouble(2);
-
-        if(time == totalTime){
-            return true;
-        }
-        return false;
     }
 }

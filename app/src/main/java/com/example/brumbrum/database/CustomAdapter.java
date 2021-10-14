@@ -17,6 +17,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
 
     private Context context;
     private ArrayList<String> score_id, score_value, time_value;
+
     public CustomAdapter(Context context, ArrayList<String> score_id, ArrayList<String> score_value, ArrayList<String> time_value) {
         this.context = context;
         this.score_id = score_id;
