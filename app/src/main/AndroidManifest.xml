@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.brumbrum_tutorial">
+    package="com.example.brumbrum">
 
     <uses-permission android:name="android.permission.VIBRATE" />
 
@@ -12,16 +12,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Brumbrum_tutorial">
         <activity
-            android:name=".DatabaseMain"
+            android:name="com.example.brumbrum.DatabaseMain"
             android:exported="true"
             android:screenOrientation="portrait"
             />
         <activity
-            android:name=".RestartActivity"
+            android:name="com.example.brumbrum.RestartActivity"
             android:screenOrientation="landscape"
             android:exported="true" />
         <activity
-            android:name=".MainActivity"
+            android:name="com.example.brumbrum.MainActivity"
             android:exported="true"
             android:screenOrientation="landscape">
             <intent-filter>
