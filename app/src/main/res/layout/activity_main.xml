@@ -65,9 +65,13 @@
         android:id="@+id/scoreboard_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="44dp"
-        android:layout_marginBottom="44dp"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
         android:text="Score Board"
+        android:textColor="#ffff00"
+        android:textSize="20sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/imageView2"
         app:layout_constraintEnd_toEndOf="parent" />
 

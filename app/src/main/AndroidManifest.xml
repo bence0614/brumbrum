@@ -14,7 +14,7 @@
         <activity
             android:name="com.example.brumbrum.DatabaseMain"
             android:exported="true"
-            android:screenOrientation="portrait"
+            android:screenOrientation="landscape"
             />
         <activity
             android:name="com.example.brumbrum.RestartActivity"
